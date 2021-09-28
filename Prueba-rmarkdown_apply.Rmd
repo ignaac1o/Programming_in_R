@@ -1,0 +1,156 @@
+---
+title: "Resume with R apply functions"
+author: Ignacio Almodovar Cárdenas & Andres Mejía Rodríguez
+date: 
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(ggplot2)
+```
+
+# Introduction
+
+The family of functions *apply()* is used in order to apply functions to different elements from a data structure, mostly used with matrices, data frames, arrays and lists.
+
+With this family of functions, we can  automatize tasks with very few lines of code and obtain useful results for our studies or analysis.
+
+This family consists of many functions due to the specific applications for some of them. All this functions have a characteristic in common, all of them receive at least two arguments, an object (arrays, matrices, data frames, lists, etc.) and a function. The most used functions from this family are:
+
+- apply()
+- lapply()
+- sapply()
+- tapply()
+- mapply()
+
+Even though those are the functions which constitute the family, in order to get more interesting results in our analysis, there are also few useful functions that combined with the ones mentioned before, have potential applications. Some of this functions are:
+
+- by()
+- sweep()
+- aggregate()
+
+In order to show how does all this functions work, we need data to work with it. For this purpose we are going to upload a data frame which contains information about loans given to different ages, intetns and quantities.
+
+```{r}
+Data=read.csv("/Users/ignacioalmodovarcardenas/Downloads/credit_risk_dataset.csv",
+              stringsAsFactors = TRUE)
+head(Data,2)
+dim(Data)
+
+#As this data frame is quite long, we are going to filter the 
+#information given in order to make easier examples
+Data_sub=select(Data,1:7,- loan_grade)
+Data_sub=filter(Data_sub, (person_age==21))
+head(Data_sub,2)
+dim(Data_sub)
+
+```
+
+# apply() family functions
+
+## apply()
+This function allows to apply a function to all the elements of a matrix. It contains three arguments. The first one is the matrix to which we want to apply the function. The second one is the margin, meaning on which direction we want to apply the function (1 indicates rows, 2 indicates columns). The last parameter is the function that we want to apply to the matrix.
+
+We can check the maximum and minimum values for personal income and loan amount contained in the data frame using:
+
+```{r}
+apply(Data_sub[c(2,6)],2,max) 
+apply(Data_sub[c(2,6)],2,min)
+```
+
+
+## lapply() 
+The *lapply()* function does basically the same as the apply() function. The main difference is that in this case, it receives a list and returns another list, not an array like in the first case.
+
+```{r}
+#We create a List containing 3 arrays
+myList = list(Data_sub$person_emp_length,Data_sub$person_income,
+              Data_sub$loan_amnt)
+
+#Let's extract the all the values from the 12th column of the list
+lapply(myList,'[',12) 
+```
+
+
+## sapply()
+This function is a mix between the last two mentioned before. In this case, it receives a list and returns an array. However, it is possible for this function to act like *lapply()* if we specify the fifth argument (simplyfy = F). This will return a list instead of an array.
+
+```{r}
+sapply(myList,class) #returns an array 
+sapply(myList,class,simplify=F) #returns a list
+lapply(myList,class) #return a list
+```
+
+
+
+## tapply()
+This function allows to apply a function to each cell of a ragged array. In other words, it groups the first array with the labels contained in the second argument and applies the function defined to this "packages".
+
+For example, let's check for which purpose people who are 21 request more loans.
+
+```{r}
+pie(tapply(Data_sub$loan_amnt,Data_sub$loan_intent,sum))
+```
+
+## mapplay()
+The *mapplay()* function is a "multivariate" version of the *apply()* function, whereas in this case, it allows to apply a function to the first, second, ..., element of each object defined in the function. It can return a list or a vector.
+
+I want to know the percentage of loans that 21 years old people request compared to their annual income. In order to solve this, I can define a function that calculates the percentage and apply it directly using the *mappy()* function.
+```{r}
+#With this function we can know the percentage of the loan in terms of their 
+#annual income
+head(mapply(function(x,y) y*100/x, Data_sub$person_income, Data_sub$loan_amnt))
+```
+
+As we can see, the solution given is an array with the percentage for each people in terms of their personal annual income.
+
+## by()
+The *by()* function allows to apply a function to specified subsets of a data frame. It does pretty much the same as *tapply()*, with the difference that this last one returns an array, while *by()* prints directly the results.
+
+Let's check the mean of each type of loan given
+
+```{r}
+by(Data$loan_amnt, Data$loan_intent, mean)
+```
+
+
+## sweep()
+With this function we can apply functions to an object. Even though it is quite similar to apply, you use it when you want to replicate different actions on the margin element selected. 
+
+We want to know the percentage of the personal income and loan amounts for each person compared to the maximum values of the sample. In order to do this, we start by dividing all the values by the maximum and then multiplying by 100 in order to show the percentage.
+
+```{r}
+tail(round(sweep(sweep(cbind((Data_sub$person_income),(Data_sub$loan_amnt)),
+                       2,apply(Data_sub[c(2,6)],2,max),"/"),
+                 2,100,"*")))
+```
+
+As we can see, we obtain each percentage rounded refered to the personal annual income and the loan amount.
+
+## agreggate()
+Along with *by()* and *tapply()*, this function also allows to apply a function to an object within a list of factor which the function is applied. In this case, the second parameter must be a list. The result obtained with this function is a data frame with the operation specified in the third parameter applied to the list.
+
+```{r, fig.width=8,fig.height=3}
+df=aggregate(Data$loan_amnt,Data["loan_intent"], mean)
+class(df)
+ggplot(data=df, aes(x=loan_intent, y=x)) + geom_point(colour="red" ) + 
+        ggtitle("Mean of loans intent")
+
+```
+The results that we get with this function is the same as we got using the *by()* function. However, in this case the object obtained allows us to plot it easily and keep working with in case that it is needed.
+
+# Conclusion
+
+As we have seen through all this functions, the apply family allows us to work with matrices, arrays, data frames and lists in a quickest way than making basic operations.
+
+We have demonstrated that we can obtain same results using different functions, and that is because most of the functions shown have the same purpose, apply a function to several points of the object. The only difference between them is that there is one that suits better for each object or each case given. 
+
+Having this many options prevents us from applying transformations to the objects in order to use it in the form allowed for the function. This is also very useful in order to keep an script clean and easily understandable.
+
+
+
+
+
+
