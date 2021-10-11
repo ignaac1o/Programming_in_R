@@ -1,0 +1,192 @@
+---
+title: "Task_4"
+author: Ignacio Almodóvar & Andrés Mejía
+output: pdf_document
+---
+
+# Programming in R
+# Excercises 1
+
+## Excercise 1: Create the following vectors
+
+### a) [10,11,12,...,38]
+
+```{r}
+a=c(10:38)
+```
+```{r,echo=FALSE}
+a
+```
+
+
+### b) [30,29,28,...,1]
+```{r}
+b=c(30:1)
+```
+```{r,echo=FALSE}
+b
+```
+### c) [1,2,3,4,3,2,1]
+```{r}
+c=c(1:4,3:1)
+```
+```{r,echo=FALSE}
+b
+```
+
+
+### d) [2,4,6,...,16,18,20]
+```{r}
+d=seq(2,20,2)
+```
+```{r,echo=FALSE}
+d
+```
+### e) [1,2,3,...,1,2,3] 10 times repeated
+```{r}
+e=rep(c(1:3),10)
+```
+```{r,echo=FALSE}
+e
+```
+### f) [1,2,3,...,1]
+```{r}
+f= e[-c(length(e),length(e)-1)]
+```
+```{r,echo=FALSE}
+f
+```
+### g) ["label 1", label 2",... "label 30"]
+```{r}
+g=paste("label",1:30)
+```
+```{r,echo=FALSE}
+g
+```
+### h) ["label-1", label-2",... "label-30"]
+```{r}
+
+h=paste('label-',1:30,sep ='')
+```
+```{r,echo=FALSE}
+h
+```
+### i) x^2*exp(x)
+```{r}
+x=seq(0.1,1,0.1)
+f=function(x){
+  return(x^2*exp(x))
+}
+i=f(x)
+```
+```{r,echo=FALSE}
+i
+```
+
+## Excercise 2: Calculate the following sums with and without using loops
+
+### a) $\sum^{23} _{j=5} (j^2+3*j^{0.5})$
+
+With loop
+```{r}
+aloop=0
+for(i in 5:23){
+  aloop=aloop+((i^2)+(3*(i^0.5)))
+}
+```
+```{r,echo=FALSE}
+aloop
+```
+
+Without loop
+```{r}
+f1=function(x){
+  return(x^2+(3*(x^0.5)))
+}
+
+anoloop=sum(f1(5:23))
+```
+```{r,echo=FALSE}
+anoloop
+```
+
+
+### b) $\sum^{18} _{i=1} (\frac{1.3^i}{i})$
+
+With loop
+```{r}
+bloop=0
+for(i in 1:18){
+  bloop=bloop+(1.3^i)/i
+}
+```
+```{r,echo=FALSE}
+bloop
+```
+
+Without loop
+```{r}
+bnoloop=sum(sapply(1:18,function(x){1.3^x/x}))
+```
+```{r,echo=FALSE}
+bnoloop
+```
+
+
+### c) $\sum^{10}_{i=1}\sum^{6}_{j=1} (\frac{i^4}{3+j})$
+
+With loop
+```{r}
+cloop=0
+for(i in 1:10){
+  cloopj=0
+  for(j in 1:6){
+    cloopj= cloopj + (i^4)/(3+j)
+  }
+  cloop=cloop+ cloopj
+}
+```
+```{r,echo=FALSE}
+cloop
+```
+
+Without loop
+```{r}
+f3=function(x,y){
+  return((x^4)/(3+y))
+}
+
+cnoloop=sum(outer(1:10,1:6,f3))
+```
+```{r,echo=FALSE}
+cnoloop
+```
+
+## Excercise 3: 
+
+### a) What does next code do?
+```{r}
+set.seed(75) #allows to always obtain the same sequence of numbers when generated at random
+M=matrix(sample(1:10,size=60,replace=TRUE),nrow=6,ncol=10) #builds a "random" 6x10 matrix with numbers between 1 and 10
+```
+### b) Find the number of entries in each row that are grater than 4
+
+
+### c) Replace the third column of the previous vector M by the sum of the second and third column
+
+```{r}
+M[,3]=(M[,2]+M[,3])
+```
+```{r,echo=FALSE}
+M
+```
+
+
+
+## Excercise 4: Calculate the following sums with and without using loops
+M[-c]
+
+
+
+
+
