@@ -25,13 +25,13 @@ This family consists of many functions due to the specific applications for some
 - tapply()
 - mapply()
 
-Even though those are the functions which constitute the family, in order to get more interesting results in our analysis, there are also few useful functions that combined with the ones mentioned before, have potential applications. Some of this functions are:
+Even though those are the functions which constitute the family, in order to get more interesting results in our analysis, there are also a few useful functions that combined with the ones mentioned before, have potential applications. Some of these functions are:
 
 - by()
 - sweep()
 - aggregate()
 
-In order to show how does all this functions work, we need data to work with it. For this purpose we are going to upload a data frame which contains information about loans given to different ages, intetns and quantities.
+In order to show how all this functions work, we need data to work with it. For this purpose we are going to upload a data frame which contains information about loans given to different ages, intetns and quantities.
 
 ```{r}
 Data=read.csv("/Users/ignacioalmodovarcardenas/Downloads/credit_risk_dataset.csv",
@@ -143,14 +143,11 @@ The results that we get with this function is the same as we got using the *by()
 
 # Conclusion
 
-As we have seen through all this functions, the apply family allows us to work with matrices, arrays, data frames and lists in a quickest way than making basic operations.
+As we have seen through all this functions, the apply family allows us to work with matrices, arrays, data frames and lists in a much faster way than transforming the data and making basic operations.
 
-We have demonstrated that we can obtain same results using different functions, and that is because most of the functions shown have the same purpose, apply a function to several points of the object. The only difference between them is that there is one that suits better for each object or each case given. 
+We have demonstrated that we can obtain the same results using different functions, and that is because most of the functions shown have the same purpose, applying a function to several points of the object. The only difference between them is that there is always one function that suits better for each object or each case given. 
 
-Having this many options prevents us from applying transformations to the objects in order to use it in the form allowed for the function. This is also very useful in order to keep an script clean and easily understandable.
-
-
-
+Having this many options prevents us from applying transformations to the objects in order to use it in the form allowed for the function. This is also very useful if we want to keep a clean and easily understandable script. 
 
 
 
