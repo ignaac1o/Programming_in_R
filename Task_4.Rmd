@@ -1,6 +1,7 @@
 ---
-title: "Task_4"
-author: Ignacio Almodóvar & Andrés Mejía
+title: "Task 4"
+author: Ignacio Almodóvar & Andrés Mejía Rodríguez
+date: 18/10/21
 output: pdf_document
 ---
 
@@ -71,7 +72,7 @@ h=paste('label-',1:30,sep ='')
 ```{r,echo=FALSE}
 h
 ```
-### i) x^2*exp(x)
+### i) $x^2e(x)$
 ```{r}
 x=seq(0.1,1,0.1)
 f=function(x){
@@ -166,10 +167,32 @@ cnoloop
 
 ### a) What does next code do?
 ```{r}
-set.seed(75) #allows to always obtain the same sequence of numbers when generated at random
-M=matrix(sample(1:10,size=60,replace=TRUE),nrow=6,ncol=10) #builds a "random" 6x10 matrix with numbers between 1 and 10
+set.seed(75) 
 ```
+This function sets the starting number used when generating a random sequence. It ensures that you always get the same sequence of random numbers each time you run the process
+
+
+```{r}
+M=matrix(sample(1:10,size=60,replace=TRUE),nrow=6,ncol=10) 
+```
+The first function matrix, builds a 6x10 matrix from the elements specified in the first parameter which in this case uses the function sample to generate a sample of a specified size (60 in this case) with numbers between 1-10 and allowing replacement.
+
 ### b) Find the number of entries in each row that are grater than 4
+
+```{r}
+counter=function(x){
+  c=c(rep(0,nrow(x)))
+for(i in 1:nrow(x)){
+  for(j in 1:ncol(x)){
+    if(x[i,j]>=4){
+      c[i]=c[i]+1
+    }
+  }
+}
+  print(c)
+}
+counter(M)
+```
 
 
 ### c) Replace the third column of the previous vector M by the sum of the second and third column
@@ -183,8 +206,24 @@ M
 
 
 
-## Excercise 4: Calculate the following sums with and without using loops
-M[-c]
+## Excercise 4: Write a function which takes a single argument which is a matrix. The function must return a matrix which is the same as the function argument but every odd number is doubled.
+```{r}
+A=matrix(1:9,3,3)
+
+doubleodd= function(x){
+  for(i in 1:nrow(x)){
+    for(j in 1:ncol(x)){
+      if(x[i,j]%%2==0){
+        x[i,j]=2*x[i,j]
+      }
+    }
+}
+return(x)
+}
+
+doubleodd(A)
+```
+
 
 
 
